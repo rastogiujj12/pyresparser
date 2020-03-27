@@ -328,7 +328,6 @@ def extract_entities_wih_custom_model(custom_nlp_text):
 def get_total_experience(experience_list):
     '''
     Wrapper function to extract total months of experience from a resume
-
     :param experience_list: list of experience text extracted
     :return: total months of experience
     '''
@@ -343,18 +342,7 @@ def get_total_experience(experience_list):
         )
         if month_format:
             exp_.append(month_format.groups())
-        else:
-            other_format = re.search(
-                r'((0[1-9]|1[0-2])(.|-|)(20[0-9][0-9]))\s*(\D|to)\s*((0[1-9]|1[0-2])(.|-|)(20[0-9][0-9])|present)',
-                line,
-                re.I
-            )
-            if other_format:
-                # print(other_format.groups())
-                year_diff_in_month   = (int(other_format.groups()[8]) - int(other_format.groups()[3])) * 12
-                month_diff           = int(other_format.groups()[1])  - int(other_format.groups()[6])
-                total_exp_in_months += (year_diff_in_month + month_diff)
-
+        
     total_exp = sum(
         [get_number_of_months_from_dates(i[0], i[2]) for i in exp_]
     )
@@ -371,6 +359,7 @@ def get_number_of_months_from_dates(date1, date2):
     :param date2: Ending date
     :return: months of experience from date1 to date2
     '''
+    
     if date2.lower() == 'present':
         date2 = datetime.now().strftime('%b %Y')
     try:
@@ -381,7 +370,17 @@ def get_number_of_months_from_dates(date1, date2):
             date2 = date2.split()
             date2 = date2[0][:3] + ' ' + date2[1]
     except IndexError:
-        return 0
+        # print('date1 ', date1, ' date2 ', date2)
+        date1 = re.search(r'(0[1-9]|1[0-2])(.|-|)(20[0-9][0-9])', date1[0], re.I)
+        date2 = re.search(r'(0[1-9]|1[0-2])(.|-|)(20[0-9][0-9])', date2, re.I)
+        # print('date1 ', date1.groups())
+        # print('date2 ', date2.groups())
+        if(date1):
+            year_diff_in_month   = (int(date2.groups()[2]) - int(date1.groups()[2])) * 12
+            month_diff           = int(date2.groups()[0])  - int(date1.groups()[0])
+            months_of_experience = year_diff_in_month + month_diff
+            # print('<><>',months_of_experience, month_diff)
+            return months_of_experience
     try:
         date1 = datetime.strptime(str(date1), '%b %Y')
         date2 = datetime.strptime(str(date2), '%b %Y')
@@ -390,7 +389,7 @@ def get_number_of_months_from_dates(date1, date2):
                                 * 12 + months_of_experience.months)
     except ValueError:
         return 0
-    print('date1', date1, ' date2', date2, ' exp', months_of_experience)
+    # print('date1', date1, ' date2', date2, ' exp', months_of_experience)
     return months_of_experience
 
 
