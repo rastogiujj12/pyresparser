@@ -303,7 +303,7 @@ def extract_location(nlp, location_matcher, raw_text):
     locations.extend(loc_names)
 
     locations = list(set(locations))
-    print(locations)
+    #print(locations)
     return locations
 
 def extract_entities_wih_custom_model(custom_nlp_text):
@@ -347,7 +347,7 @@ def get_total_experience(experience_list):
         [get_number_of_months_from_dates(i[0], i[2]) for i in exp_]
     )
     total_experience_in_months = total_exp + total_exp_in_months
-    print('total exp',total_experience_in_months)
+    #print('total exp',total_experience_in_months)
     return total_experience_in_months
 
 
@@ -498,7 +498,7 @@ def extract_skills(nlp_text, noun_chunks, skills_file=None):
     tokens = [token.text for token in nlp_text if not token.is_stop]
     if not skills_file:
         data = pd.read_csv(
-            os.path.join(os.path.dirname(__file__), 'skills.csv')
+            os.path.join(os.path.dirname(__file__), 'all_skills.csv')
         )
     else:
         data = pd.read_csv(skills_file)
