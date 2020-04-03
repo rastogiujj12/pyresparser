@@ -23,76 +23,6 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 
 
-# def extract_text_from_pdf(pdf_path):
-#     '''
-#     Helper function to extract the plain text from .pdf files
-
-#     :param pdf_path: path to PDF file to be extracted (remote or local)
-#     :return: iterator of string of extracted text
-#     '''
-#     # https://www.blog.pythonlibrary.org/2018/05/03/exporting-data-from-pdfs-with-python/
-#     if not isinstance(pdf_path, io.BytesIO):
-#         # extract text from local pdf file
-#         with open(pdf_path, 'rb') as fh:
-#             try:
-#                 for page in PDFPage.get_pages(
-#                         fh,
-#                         caching=True,
-#                         check_extractable=True
-#                 ):
-#                     resource_manager = PDFResourceManager()
-#                     fake_file_handle = io.StringIO()
-#                     converter = TextConverter(
-#                         resource_manager,
-#                         fake_file_handle,
-#                         codec='utf-8',
-#                         laparams=LAParams()
-#                     )
-#                     page_interpreter = PDFPageInterpreter(
-#                         resource_manager,
-#                         converter
-#                     )
-#                     page_interpreter.process_page(page)
-
-#                     text = fake_file_handle.getvalue()
-#                     yield text
-
-#                     # close open handles
-#                     converter.close()
-#                     fake_file_handle.close()
-#             except PDFSyntaxError:
-#                 return
-#     else:
-#         # extract text from remote pdf file
-#         try:
-#             for page in PDFPage.get_pages(
-#                     pdf_path,
-#                     caching=True,
-#                     check_extractable=True
-#             ):
-#                 resource_manager = PDFResourceManager()
-#                 fake_file_handle = io.StringIO()
-#                 converter = TextConverter(
-#                     resource_manager,
-#                     fake_file_handle,
-#                     codec='utf-8',
-#                     laparams=LAParams()
-#                 )
-#                 page_interpreter = PDFPageInterpreter(
-#                     resource_manager,
-#                     converter
-#                 )
-#                 page_interpreter.process_page(page)
-
-#                 text = fake_file_handle.getvalue()
-#                 yield text
-
-#                 # close open handles
-#                 converter.close()
-#                 fake_file_handle.close()
-#         except PDFSyntaxError:
-#             return
-
 def extract_text_from_pdf(pdf_path):
     document = open(pdf_path, 'rb')
     #Create resource manager
@@ -209,7 +139,7 @@ def extract_entity_sections_grad(text):
     # sections_in_resume = [i for i in text_split if i.lower() in sections]
     entities = {}
     key = False
-    print('grad cs',cs);
+    # print('grad cs',cs);
     # print('text_split',text_split)
     for phrase in text_split:
         if len(phrase) == 1:
@@ -254,12 +184,9 @@ def extract_entity_sections_grad(text):
 
 
 def extract_location(nlp, location_matcher, raw_text):
-    print('in this func')
     ###=======================  LOCATION MATCHER  ==================================
     ##
     ##
-#     nlp = spacy.load('en_core_web_sm')
-
     # Pass Data theough NLP pipeline
     document = nlp(raw_text)
 
@@ -303,7 +230,7 @@ def extract_location(nlp, location_matcher, raw_text):
     locations.extend(loc_names)
 
     locations = list(set(locations))
-    print(locations)
+    # print(locations)
     return locations
 
 def extract_entities_wih_custom_model(custom_nlp_text):
@@ -347,7 +274,7 @@ def get_total_experience(experience_list):
         [get_number_of_months_from_dates(i[0], i[2]) for i in exp_]
     )
     total_experience_in_months = total_exp + total_exp_in_months
-    print('total exp',total_experience_in_months)
+    # print('total exp',total_experience_in_months)
     return total_experience_in_months
 
 
@@ -404,7 +331,7 @@ def extract_entity_sections_professional(text):
     text_split = [i.strip() for i in text.split('\n')]
     entities = {}
     key = False
-    print('professional cs',cs);
+    # print('professional cs',cs);
     for phrase in text_split:
         if len(phrase) == 1:
             p_key = phrase
